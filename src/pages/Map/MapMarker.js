@@ -31,8 +31,6 @@ const MapMarker = () => {
   //// Check User Device Location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
       setPosition({
         lat: position.coords.latitude,
         lng: position.coords.longitude,
@@ -77,7 +75,7 @@ const MapMarker = () => {
                 <label>Current Coordinates</label>
                 <input
                   type="text"
-                  value={`Latitude: ${position.lat},Longtitude: ${position.lng}`}
+                  value={`Latitude: ${position.lat},Longitude: ${position.lng}`}
                   readOnly
                 />
 
@@ -93,7 +91,7 @@ const MapMarker = () => {
                 <button
                   onClick={() => {
                     console.log(
-                      `Latitiude : ${position.lat}\nLongtitude : ${position.lng}
+                      `Latitude : ${position.lat}\nLongitude : ${position.lng}
                       \nMy Name is: ${name}
                       
                       `
