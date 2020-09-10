@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
+import "../Map/Marker.css";
 import {
   GoogleMap,
   useLoadScript,
@@ -22,6 +23,8 @@ const MapMarker = () => {
   });
 
   const [position, setPosition] = useState(null);
+
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -47,9 +50,29 @@ const MapMarker = () => {
         onClick={event => {
           console.log("lat", event.latLng.lat());
           console.log("long", event.latLng.lng());
+          setSelected(null);
         }}
       >
-        <Marker position={position} />
+        <Marker
+          position={position}
+          onClick={() => {
+            setSelected(position);
+          }}
+        />
+
+        {selected ? (
+          <InfoWindow
+            position={{
+              lat: selected.lat + 0.002,
+              lng: selected.lng + 0.0001,
+            }}
+            onCloseClick={() => {
+              setSelected(null);
+            }}
+          >
+            <div className="google-info-window">Hello</div>
+          </InfoWindow>
+        ) : null}
       </GoogleMap>
     </div>
   );
