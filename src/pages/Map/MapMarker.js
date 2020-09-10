@@ -24,8 +24,11 @@ const MapMarker = () => {
 
   const [position, setPosition] = useState(null);
 
+  const [name, setName] = useState("Tahmid Ziko");
+
   const [selected, setSelected] = useState(null);
 
+  //// Check User Device Location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
       console.log("Latitude is :", position.coords.latitude);
@@ -36,10 +39,13 @@ const MapMarker = () => {
       });
     });
   }, []);
+
   if (LoadError) return "Error Loading Map";
   if (!isLoaded) return "Loading Map";
   if (!position)
     return "Please Confirm Your Location Again Reload Please. I'm Waiting.. ";
+
+  //    Return JSX
   return (
     <div>
       <GoogleMap
@@ -47,11 +53,6 @@ const MapMarker = () => {
         zoom={14}
         center={position}
         options={options}
-        onClick={event => {
-          console.log("lat", event.latLng.lat());
-          console.log("long", event.latLng.lng());
-          setSelected(null);
-        }}
       >
         <Marker
           position={position}
@@ -60,6 +61,7 @@ const MapMarker = () => {
           }}
         />
 
+        {/*  Here If Select on Marker then condition will be true */}
         {selected ? (
           <InfoWindow
             position={{
@@ -70,7 +72,38 @@ const MapMarker = () => {
               setSelected(null);
             }}
           >
-            <div className="google-info-window">Hello</div>
+            <div className="google-info-window">
+              <div>
+                <label>Current Coordinates</label>
+                <input
+                  type="text"
+                  value={`Latitude: ${position.lat},Longtitude: ${position.lng}`}
+                  readOnly
+                />
+
+                <label>My Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={e => {
+                    setName(e.target.value);
+                  }}
+                />
+
+                <button
+                  onClick={() => {
+                    console.log(
+                      `Latitiude : ${position.lat}\nLongtitude : ${position.lng}
+                      \nMy Name is: ${name}
+                      
+                      `
+                    );
+                  }}
+                >
+                  Send Data To Console
+                </button>
+              </div>
+            </div>
           </InfoWindow>
         ) : null}
       </GoogleMap>
